@@ -3,9 +3,7 @@ const NewReply = require('../NewReply')
 describe('a NewReply entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
-    const payload = {
-      content: 'content of reply'
-    }
+    const payload = { owner: 'user-123' }
 
     // Action and Assert
     expect(() => new NewReply(payload)).toThrowError(

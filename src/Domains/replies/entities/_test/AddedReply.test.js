@@ -3,10 +3,7 @@ const AddedReply = require('../AddedReply')
 describe('a AddedReply entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
-    const payload = {
-      id: 'reply-123',
-      content: 'content of reply'
-    }
+    const payload = { id: 'reply-123' }
 
     // Action and Assert
     expect(() => new AddedReply(payload)).toThrowError(
