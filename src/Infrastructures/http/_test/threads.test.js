@@ -86,7 +86,7 @@ describe('/threads endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: '/threads',
-        payload: payload
+        payload
       })
 
       // Assert

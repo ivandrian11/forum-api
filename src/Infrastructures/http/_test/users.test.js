@@ -25,7 +25,7 @@ describe('/users endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: '/users',
-        payload: payload
+        payload
       })
 
       // Assert
@@ -50,7 +50,7 @@ describe('/users endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: '/users',
-        payload: payload
+        payload
       })
 
       // Assert
@@ -75,7 +75,7 @@ describe('/users endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: '/users',
-        payload: payload
+        payload
       })
 
       // Assert
@@ -100,7 +100,7 @@ describe('/users endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: '/users',
-        payload: payload
+        payload
       })
 
       // Assert
@@ -126,7 +126,7 @@ describe('/users endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: '/users',
-        payload: payload
+        payload
       })
 
       // Assert
@@ -151,7 +151,7 @@ describe('/users endpoint', () => {
     const response = await server.inject({
       method: 'POST',
       url: '/users',
-      payload: payload
+      payload
     })
 
     // Assert
