@@ -4,9 +4,9 @@ class RefreshAuthenticationUseCase {
     this._authenticationTokenManager = authenticationTokenManager
   }
 
-  async execute (useCasePayload) {
-    this._verifyPayload(useCasePayload)
-    const { refreshToken } = useCasePayload
+  async execute (payload) {
+    this._verifyPayload(payload)
+    const { refreshToken } = payload
 
     await this._authenticationTokenManager.verifyRefreshToken(refreshToken)
     await this._authenticationRepository.checkAvailabilityToken(refreshToken)
@@ -27,9 +27,7 @@ class RefreshAuthenticationUseCase {
     }
 
     if (typeof refreshToken !== 'string') {
-      throw new Error(
-        'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_WRONG_DATA_TYPE'
-      )
+      throw new Error('REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_WRONG_DATA_TYPE')
     }
   }
 }

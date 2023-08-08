@@ -3,8 +3,8 @@ class DeleteReplyUseCase {
     this._replyRepository = replyRepository
   }
 
-  async execute (useCasePayload) {
-    const { replyId, commentId, threadId, owner } = useCasePayload
+  async execute (payload) {
+    const { replyId, commentId, threadId, owner } = payload
 
     await this._replyRepository.verifyReplyIsExist(replyId, commentId, threadId)
     await this._replyRepository.verifyIsTheOwner(replyId, owner)

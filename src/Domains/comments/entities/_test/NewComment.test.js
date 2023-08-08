@@ -3,9 +3,7 @@ const NewComment = require('../NewComment')
 describe('a NewComment entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
-    const payload = {
-      content: 'content of comment'
-    }
+    const payload = { owner: 'user-123' }
 
     // Action and Assert
     expect(() => new NewComment(payload)).toThrowError(

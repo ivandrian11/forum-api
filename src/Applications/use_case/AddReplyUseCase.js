@@ -7,11 +7,11 @@ class AddReplyUseCase {
     this._commentRepository = commentRepository
   }
 
-  async execute (useCasePayload) {
-    const newReply = new NewReply(useCasePayload)
+  async execute (payload) {
+    const newReply = new NewReply(payload)
     await this._commentRepository.verifyCommentIsExist(
-      useCasePayload.commentId,
-      useCasePayload.threadId
+      payload.commentId,
+      payload.threadId
     )
     const addedReply = await this._replyRepository.addReply(newReply)
     return new AddedReply(addedReply)

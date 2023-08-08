@@ -3,12 +3,7 @@ const DetailThread = require('../DetailThread')
 describe('DetailThread entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
-    const payload = {
-      title: 'title of thread',
-      body: 'body of thread',
-      username: 'user-123',
-      date: '2023-08-21T07:00:00.000Z'
-    }
+    const payload = { username: 'user-123' }
 
     // Action and Assert
     expect(() => new DetailThread(payload)).toThrowError(

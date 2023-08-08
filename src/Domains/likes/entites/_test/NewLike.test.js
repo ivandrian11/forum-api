@@ -7,7 +7,7 @@ describe('a NewLike entities', () => {
 
     // Action and Assert
     expect(() => new NewLike(payload)).toThrowError(
-      'NEW_REPLY.NOT_CONTAIN_PROPERTY_CORRECTLY'
+      'NEW_LIKE.NOT_CONTAIN_PROPERTY_CORRECTLY'
     )
   })
 
@@ -19,7 +19,7 @@ describe('a NewLike entities', () => {
     }
 
     // Action and Assert
-    expect(() => new NewLike(payload)).toThrowError('NEW_REPLY.WRONG_DATA_TYPE')
+    expect(() => new NewLike(payload)).toThrowError('NEW_LIKE.WRONG_DATA_TYPE')
   })
 
   it('should create NewLike object correctly', () => {
@@ -30,10 +30,10 @@ describe('a NewLike entities', () => {
     }
 
     // Action
-    const NewLike = new NewLike(payload)
+    const newLike = new NewLike(payload)
 
     // Assert
-    expect(NewLike).toBeInstanceOf(NewLike)
-    expect(NewLike).toEqual(payload)
+    expect(newLike).toBeInstanceOf(NewLike)
+    expect(newLike).toEqual(payload)
   })
 })

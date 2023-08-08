@@ -3,10 +3,7 @@ const AddedThread = require('../AddedThread')
 describe('an AddedThread entities', () => {
   it('should throw error when payload not contain needed property', () => {
     // Arrange
-    const payload = {
-      id: 'thread-123',
-      title: 'title of thread'
-    }
+    const payload = { owner: 'user-123' }
 
     // Action & Assert
     expect(() => new AddedThread(payload)).toThrowError(
