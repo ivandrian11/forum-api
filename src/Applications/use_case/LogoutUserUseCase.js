@@ -3,9 +3,9 @@ class LogoutUserUseCase {
     this._authenticationRepository = authenticationRepository
   }
 
-  async execute (useCasePayload) {
-    this._validatePayload(useCasePayload)
-    const { refreshToken } = useCasePayload
+  async execute (payload) {
+    this._validatePayload(payload)
+    const { refreshToken } = payload
     await this._authenticationRepository.checkAvailabilityToken(refreshToken)
     await this._authenticationRepository.deleteToken(refreshToken)
   }
@@ -19,9 +19,7 @@ class LogoutUserUseCase {
     }
 
     if (typeof refreshToken !== 'string') {
-      throw new Error(
-        'DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_WRONG_DATA_TYPE'
-      )
+      throw new Error('DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_WRONG_DATA_TYPE')
     }
   }
 }
