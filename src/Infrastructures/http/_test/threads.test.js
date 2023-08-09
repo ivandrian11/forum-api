@@ -7,10 +7,17 @@ const ServerTestHelper = require('../../../../tests/ServerTestHelper')
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper')
 
 describe('/threads endpoint', () => {
-  afterAll(async () => {
-    await UsersTableTestHelper.cleanTable()
+  beforeAll(async () => {
+    await UsersTableTestHelper.addUser({ id: 'user-123' })
+  })
+
+  afterEach(async () => {
     await ThreadsTableTestHelper.cleanTable()
     await AuthenticationsTableTestHelper.cleanTable()
+  })
+
+  afterAll(async () => {
+    await UsersTableTestHelper.cleanTable()
     await pool.end()
   })
 
@@ -34,9 +41,7 @@ describe('/threads endpoint', () => {
         method: 'POST',
         url: '/threads',
         payload: badPayload,
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+        headers: { Authorization: `Bearer ${accessToken}` }
       })
 
       // Assert
@@ -64,9 +69,7 @@ describe('/threads endpoint', () => {
         method: 'POST',
         url: '/threads',
         payload: badPayload,
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+        headers: { Authorization: `Bearer ${accessToken}` }
       })
 
       // Assert
@@ -108,9 +111,7 @@ describe('/threads endpoint', () => {
         method: 'POST',
         url: '/threads',
         payload,
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+        headers: { Authorization: `Bearer ${accessToken}` }
       })
 
       // Assert
@@ -142,7 +143,6 @@ describe('/threads endpoint', () => {
 
     it('should response 200 and array of thread', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({ id: 'user-123' })
       await ThreadsTableTestHelper.addThread({ id: 'thread-123' })
       const server = await createServer(container)
 

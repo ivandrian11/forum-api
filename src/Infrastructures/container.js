@@ -132,21 +132,21 @@ container.register([
         }
       ]
     }
+  },
+  {
+    key: LikeRepository.name,
+    Class: LikeRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool
+        },
+        {
+          concrete: nanoid
+        }
+      ]
+    }
   }
-  // {
-  //   key: LikeRepository.name,
-  //   Class: LikeRepositoryPostgres,
-  //   parameter: {
-  //     dependencies: [
-  //       {
-  //         concrete: pool
-  //       },
-  //       {
-  //         concrete: nanoid
-  //       }
-  //     ]
-  //   }
-  // }
 ])
 
 // registering use cases
@@ -313,6 +313,19 @@ container.register([
         {
           name: 'replyRepository',
           internal: ReplyRepository.name
+        }
+      ]
+    }
+  },
+  {
+    key: LikeCommentUseCase.name,
+    Class: LikeCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'likeRepository',
+          internal: LikeRepository.name
         }
       ]
     }

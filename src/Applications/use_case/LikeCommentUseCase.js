@@ -8,11 +8,11 @@ class LikeCommentUseCase {
   async execute (payload) {
     const newLike = new NewLike(payload)
     const data = await this._likeRepository.verifyLikeIsExist(
-      payload.commentId,
-      payload.owner
+      newLike.commentId,
+      newLike.owner
     )
     if (data) {
-      await this._likeRepository.deleteLikeById(data.id)
+      await this._likeRepository.deleteLike(newLike.commentId, newLike.owner)
     } else {
       await this._likeRepository.addLike(newLike)
     }

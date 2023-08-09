@@ -9,7 +9,7 @@ const LikesTableTestHelper = {
     date = new Date('2023-08-21T00:00:00.000Z')
   }) {
     const query = {
-      text: 'INSERT INTO likes VALUES($1, $2, $3, $4, $5)',
+      text: 'INSERT INTO likes VALUES($1, $2, $3, $4)',
       values: [id, date, owner, commentId]
     }
 

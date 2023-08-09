@@ -9,21 +9,21 @@ const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelp
 const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper')
 
 describe('/replies endpoint', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await UsersTableTestHelper.addUser({ id: 'user-123' })
     await ThreadsTableTestHelper.addThread({ id: 'thread-123' })
     await CommentsTableTestHelper.addComment({ id: 'comment-123' })
   })
 
   afterEach(async () => {
-    await UsersTableTestHelper.cleanTable()
-    await ThreadsTableTestHelper.cleanTable()
-    await AuthenticationsTableTestHelper.cleanTable()
-    await CommentsTableTestHelper.cleanTable()
     await RepliesTableTestHelper.cleanTable()
+    await AuthenticationsTableTestHelper.cleanTable()
   })
 
   afterAll(async () => {
+    await CommentsTableTestHelper.cleanTable()
+    await ThreadsTableTestHelper.cleanTable()
+    await UsersTableTestHelper.cleanTable()
     await pool.end()
   })
 
