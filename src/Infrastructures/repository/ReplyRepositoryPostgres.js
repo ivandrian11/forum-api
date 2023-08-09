@@ -26,10 +26,10 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     return new AddedReply({ ...rows[0] })
   }
 
-  async verifyIsTheOwner (replyId, ownerId) {
+  async verifyIsTheOwner (replyId, owner) {
     const query = {
       text: 'SELECT 1 FROM replies WHERE id = $1 AND owner = $2',
-      values: [replyId, ownerId]
+      values: [replyId, owner]
     }
 
     const { rowCount } = await this._pool.query(query)
