@@ -38,12 +38,15 @@ describe('GetThreadUseCase', () => {
       }
     ]
 
-    const outputLike = 0
+    const outputLikes = [
+      { id: 'likes-abc', comment_id: 'comment-123' },
+      { id: 'likes-xyz', comment_id: 'comment-123' }
+    ]
 
     const expectedOutput = [
       {
         ...outputComment[0],
-        likeCount: outputLike,
+        likeCount: outputLikes.length,
         replies: outputReply.map(({ comment_id, ...props }) => props)
       }
     ]
@@ -62,7 +65,9 @@ describe('GetThreadUseCase', () => {
     mockReplyRepository.getRepliesByThreadId = jest
       .fn()
       .mockResolvedValue(outputReply)
-    mockLikeRepository.getLikesByThreadId = jest.fn().mockResolvedValue([])
+    mockLikeRepository.getLikesByThreadId = jest
+      .fn()
+      .mockResolvedValue(outputLikes)
 
     const mockDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
