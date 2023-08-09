@@ -34,7 +34,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const { rowCount } = await this._pool.query(query)
 
     if (!rowCount) {
-      throw new NotFoundError('Thread tidak ditemukan')
+      throw new NotFoundError('Resource tidak ditemukan')
     }
 
     return rowCount
@@ -53,7 +53,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const { rows, rowCount } = await this._pool.query(query)
 
     if (!rowCount) {
-      throw new NotFoundError('Thread tidak ditemukan')
+      throw new NotFoundError('Resource tidak ditemukan')
     }
 
     return rows[0]
