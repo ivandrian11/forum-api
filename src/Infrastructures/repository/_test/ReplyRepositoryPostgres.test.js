@@ -50,7 +50,7 @@ describe('ReplyRepositoryPostgres', () => {
       ).resolves.toHaveLength(1)
     })
 
-    it('should return added comment correctly', async () => {
+    it('should return added reply correctly', async () => {
       // Action
       const addedReply = await replyRepositoryPostgres.addReply(payload)
 

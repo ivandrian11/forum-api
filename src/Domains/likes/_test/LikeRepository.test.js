@@ -17,5 +17,9 @@ describe('LikeRepository repo interface', () => {
     await expect(likeRepository.deleteLikeById('')).rejects.toThrowError(
       'LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED'
     )
+
+    await expect(
+      likeRepository.getLikeCountByCommentId('')
+    ).rejects.toThrowError('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   })
 })
