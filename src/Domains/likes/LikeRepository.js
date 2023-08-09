@@ -3,7 +3,7 @@ class LikeRepository {
     throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
 
-  async verifyLikeIsExist (commentId, owner) {
+  async verifyLikeIsExist (threadId, commentId, owner) {
     throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
 

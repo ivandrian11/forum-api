@@ -13,10 +13,11 @@ class LikesHandler {
       LikeCommentUseCase.name
     )
 
-    const { commentId } = request.params
+    const { threadId, commentId } = request.params
     const { id: credentialId } = request.auth.credentials
 
     await likeCommentUseCase.execute({
+      threadId,
       commentId,
       owner: credentialId
     })
@@ -24,7 +25,6 @@ class LikesHandler {
     const response = h.response({
       status: 'success'
     })
-    response.code(201)
     return response
   }
 }

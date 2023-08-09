@@ -47,8 +47,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const query = {
       text: `SELECT 1
             FROM comments WHERE id = $1 
-            AND thread_id = $2 
-            AND is_deleted = false`,
+            AND thread_id = $2 `,
       values: [commentId, threadId]
     }
 

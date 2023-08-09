@@ -1,25 +1,24 @@
 const NewLike = require('../NewLike')
 
 describe('a NewLike entities', () => {
-  it('should throw error when payload did not contain needed property', () => {
+  it('should throw error when commentId is missing', () => {
     // Arrange
     const payload = { owner: 'user-123' }
 
     // Action and Assert
     expect(() => new NewLike(payload)).toThrowError(
-      'NEW_LIKE.NOT_CONTAIN_PROPERTY_CORRECTLY'
+      'NEW_LIKE.RESOURCE_NOT_FOUND'
     )
   })
 
-  it('should throw error when payload did not meet data type specification', () => {
+  it('should throw error when owner is missing', () => {
     // Arrange
     const payload = {
-      commentId: true,
-      owner: 'user-123'
+      commentId: 'comment-123'
     }
 
     // Action and Assert
-    expect(() => new NewLike(payload)).toThrowError('NEW_LIKE.WRONG_DATA_TYPE')
+    expect(() => new NewLike(payload)).toThrowError('NEW_LIKE.MISSING_TOKEN')
   })
 
   it('should create NewLike object correctly', () => {

@@ -2,6 +2,7 @@ const GetDetailThreadUseCase = require('../GetDetailThreadUseCase')
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository')
 const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository')
+const LikeRepository = require('../../../Domains/likes/LikeRepository')
 
 describe('GetThreadUseCase', () => {
   it('should orchestrating get detail thread action correctly', async () => {
@@ -37,9 +38,12 @@ describe('GetThreadUseCase', () => {
       }
     ]
 
+    const outputLike = 0
+
     const expectedOutput = [
       {
         ...outputComment[0],
+        likeCount: outputLike,
         replies: outputReply.map(({ comment_id, ...props }) => props)
       }
     ]
@@ -47,6 +51,7 @@ describe('GetThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository()
     const mockCommentRepository = new CommentRepository()
     const mockReplyRepository = new ReplyRepository()
+    const mockLikeRepository = new LikeRepository()
 
     mockThreadRepository.getThreadById = jest
       .fn()
@@ -57,11 +62,13 @@ describe('GetThreadUseCase', () => {
     mockReplyRepository.getRepliesByThreadId = jest
       .fn()
       .mockResolvedValue(outputReply)
+    mockLikeRepository.getLikesByThreadId = jest.fn().mockResolvedValue([])
 
     const mockDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
-      replyRepository: mockReplyRepository
+      replyRepository: mockReplyRepository,
+      likeRepository: mockLikeRepository
     })
 
     // Action
@@ -73,6 +80,9 @@ describe('GetThreadUseCase', () => {
       payload.threadId
     )
     expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(
+      payload.threadId
+    )
+    expect(mockLikeRepository.getLikesByThreadId).toBeCalledWith(
       payload.threadId
     )
     expect(detailThread).toStrictEqual({

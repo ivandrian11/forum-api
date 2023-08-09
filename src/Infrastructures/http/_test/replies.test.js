@@ -84,7 +84,6 @@ describe('/replies endpoint', () => {
     it('should response 401 when request not contain access token', async () => {
       // Arrange
       const server = await createServer(container)
-      await ServerTestHelper.getCredentialData({ server })
 
       // Action
       const response = await server.inject({

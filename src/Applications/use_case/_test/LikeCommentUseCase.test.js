@@ -1,20 +1,27 @@
+const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const LikeRepository = require('../../../Domains/likes/LikeRepository')
 const LikeCommentUseCase = require('../LikeCommentUseCase')
 
 describe('LikeCommentUseCase', () => {
+  // Arrange
+  const payload = {
+    commentId: 'comment-123',
+    owner: 'user-123'
+  }
+
+  const mockLikeRepository = new LikeRepository()
+  const mockCommentRepository = new CommentRepository()
+  mockCommentRepository.verifyCommentIsExist = jest.fn().mockResolvedValue()
+
+  const likeCommentUseCase = new LikeCommentUseCase({
+    likeRepository: mockLikeRepository,
+    commentRepository: mockCommentRepository
+  })
+
   it('should orchestrating the like comment action correctly', async () => {
     // Arrange
-    const payload = {
-      commentId: 'comment-123',
-      owner: 'user-123'
-    }
-
-    const mockLikeRepository = new LikeRepository()
     mockLikeRepository.verifyLikeIsExist = jest.fn().mockReturnValue()
     mockLikeRepository.addLike = jest.fn().mockResolvedValue()
-    const likeCommentUseCase = new LikeCommentUseCase({
-      likeRepository: mockLikeRepository
-    })
 
     // Action
     await likeCommentUseCase.execute(payload)
@@ -29,17 +36,8 @@ describe('LikeCommentUseCase', () => {
 
   it('should orchestrating the unlike comment action correctly', async () => {
     // Arrange
-    const payload = {
-      commentId: 'comment-123',
-      owner: 'user-123'
-    }
-
-    const mockLikeRepository = new LikeRepository()
     mockLikeRepository.verifyLikeIsExist = jest.fn().mockReturnValue(1)
     mockLikeRepository.deleteLike = jest.fn().mockResolvedValue()
-    const likeCommentUseCase = new LikeCommentUseCase({
-      likeRepository: mockLikeRepository
-    })
 
     // Action
     await likeCommentUseCase.execute(payload)

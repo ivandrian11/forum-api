@@ -1,12 +1,17 @@
 const NewLike = require('../../Domains/likes/entites/NewLike')
 
 class LikeCommentUseCase {
-  constructor ({ likeRepository }) {
+  constructor ({ likeRepository, commentRepository }) {
     this._likeRepository = likeRepository
+    this._commentRepository = commentRepository
   }
 
   async execute (payload) {
     const newLike = new NewLike(payload)
+    await this._commentRepository.verifyCommentIsExist(
+      newLike.commentId,
+      payload.threadId
+    )
     const data = await this._likeRepository.verifyLikeIsExist(
       newLike.commentId,
       newLike.owner

@@ -10,12 +10,12 @@ class NewLike {
   _verifyPayload (payload) {
     const { commentId, owner } = payload
 
-    if (!commentId || !owner) {
-      throw new Error('NEW_LIKE.NOT_CONTAIN_PROPERTY_CORRECTLY')
+    if (!commentId) {
+      throw new Error('NEW_LIKE.RESOURCE_NOT_FOUND')
     }
 
-    if (typeof commentId !== 'string' || typeof owner !== 'string') {
-      throw new Error('NEW_LIKE.WRONG_DATA_TYPE')
+    if (!owner) {
+      throw new Error('NEW_LIKE.MISSING_TOKEN')
     }
   }
 }

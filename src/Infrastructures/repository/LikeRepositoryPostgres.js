@@ -57,7 +57,7 @@ class LikeRepositoryPostgres extends LikeRepository {
 
   async getLikesByThreadId (threadId) {
     const query = {
-      text: `SELECT l.id
+      text: `SELECT l.comment_id
             FROM likes l
             JOIN comments c ON l.comment_id = c.id
             WHERE c.thread_id = $1`,
