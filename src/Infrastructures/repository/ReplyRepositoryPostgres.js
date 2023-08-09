@@ -50,8 +50,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
             JOIN comments c ON r.comment_id = c.id
             WHERE r.id = $1
             AND r.comment_id = $2
-            AND c.thread_id = $3
-            AND r.is_deleted = false`,
+            AND c.thread_id = $3`,
       values: [replyId, commentId, threadId]
     }
 
