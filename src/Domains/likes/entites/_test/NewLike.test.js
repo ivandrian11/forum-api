@@ -33,6 +33,7 @@ describe('a NewLike entities', () => {
 
     // Assert
     expect(newLike).toBeInstanceOf(NewLike)
-    expect(newLike).toEqual(payload)
+    expect(newLike.commentId).toEqual(payload.commentId)
+    expect(newLike.owner).toEqual(payload.owner)
   })
 })

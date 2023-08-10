@@ -13,7 +13,7 @@ describe('AddReplyUseCase', () => {
       owner: 'user-123',
       content: 'content of reply'
     }
-    const mockAddedReply = new AddedReply({
+    const expectedAddedReply = new AddedReply({
       id: 'reply-123',
       content: payload.content,
       commentId: payload.commentId,
@@ -25,7 +25,15 @@ describe('AddReplyUseCase', () => {
     const mockReplyRepository = new ReplyRepository()
 
     mockCommentRepository.verifyCommentIsExist = jest.fn().mockResolvedValue()
-    mockReplyRepository.addReply = jest.fn().mockResolvedValue(mockAddedReply)
+    mockReplyRepository.addReply = jest.fn().mockResolvedValue(
+      new AddedReply({
+        id: 'reply-123',
+        content: payload.content,
+        commentId: payload.commentId,
+        owner: payload.owner,
+        date: '2023-08-21T07:00:00.000Z'
+      })
+    )
 
     const addReplyUseCase = new AddReplyUseCase({
       replyRepository: mockReplyRepository,
@@ -36,7 +44,7 @@ describe('AddReplyUseCase', () => {
     const addedReply = await addReplyUseCase.execute(payload)
 
     // Assert
-    expect(addedReply).toStrictEqual(mockAddedReply)
+    expect(addedReply).toStrictEqual(expectedAddedReply)
     expect(mockCommentRepository.verifyCommentIsExist).toBeCalledWith(
       payload.commentId,
       payload.threadId

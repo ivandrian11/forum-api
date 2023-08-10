@@ -38,6 +38,8 @@ describe('an AddedThread entities', () => {
 
     // Assert
     expect(addedThread).toBeInstanceOf(AddedThread)
-    expect(addedThread).toEqual(payload)
+    expect(addedThread.id).toEqual(payload.id)
+    expect(addedThread.title).toEqual(payload.title)
+    expect(addedThread.owner).toEqual(payload.owner)
   })
 })
