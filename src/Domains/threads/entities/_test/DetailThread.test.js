@@ -42,6 +42,10 @@ describe('DetailThread entities', () => {
 
     // Assert
     expect(detaiLThread).toBeInstanceOf(DetailThread)
-    expect(detaiLThread).toEqual(payload)
+    expect(detaiLThread.id).toEqual(payload.id)
+    expect(detaiLThread.title).toEqual(payload.title)
+    expect(detaiLThread.body).toEqual(payload.body)
+    expect(detaiLThread.username).toEqual(payload.username)
+    expect(detaiLThread.date).toEqual(payload.date)
   })
 })

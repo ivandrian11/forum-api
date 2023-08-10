@@ -13,7 +13,7 @@ describe('AddUserUseCase', () => {
       fullname: 'PostgreSQL'
     }
 
-    const mockRegisteredUser = new RegisteredUser({
+    const expectedRegisteredUser = new RegisteredUser({
       id: 'user-123',
       username: payload.username,
       fullname: payload.fullname
@@ -24,7 +24,13 @@ describe('AddUserUseCase', () => {
 
     mockUserRepository.verifyAvailableUsername = jest.fn().mockResolvedValue()
     mockPasswordHash.hash = jest.fn().mockResolvedValue('encrypted_password')
-    mockUserRepository.addUser = jest.fn().mockResolvedValue(mockRegisteredUser)
+    mockUserRepository.addUser = jest.fn().mockResolvedValue(
+      new RegisteredUser({
+        id: 'user-123',
+        username: payload.username,
+        fullname: payload.fullname
+      })
+    )
 
     const getUserUseCase = new AddUserUseCase({
       userRepository: mockUserRepository,
@@ -35,7 +41,7 @@ describe('AddUserUseCase', () => {
     const registeredUser = await getUserUseCase.execute(payload)
 
     // Assert
-    expect(registeredUser).toStrictEqual(mockRegisteredUser)
+    expect(registeredUser).toStrictEqual(expectedRegisteredUser)
     expect(mockUserRepository.verifyAvailableUsername).toBeCalledWith(
       payload.username
     )

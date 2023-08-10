@@ -38,6 +38,8 @@ describe('a AddedReply entities', () => {
 
     // Assert
     expect(addedReply).toBeInstanceOf(AddedReply)
-    expect(addedReply).toEqual(payload)
+    expect(addedReply.id).toEqual(payload.id)
+    expect(addedReply.owner).toEqual(payload.owner)
+    expect(addedReply.content).toEqual(payload.content)
   })
 })
