@@ -20,8 +20,8 @@ describe('LikeCommentUseCase', () => {
 
   it('should orchestrating the like comment action correctly', async () => {
     // Arrange
-    mockLikeRepository.verifyLikeIsExist = jest.fn().mockReturnValue()
-    mockLikeRepository.addLike = jest.fn().mockResolvedValue()
+    mockLikeRepository.verifyLikeIsExist = jest.fn().mockReturnValue(0)
+    mockLikeRepository.addLike = jest.fn().mockResolvedValue('likes-123')
 
     // Action
     await likeCommentUseCase.execute(payload)

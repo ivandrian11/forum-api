@@ -51,8 +51,6 @@ class LikeRepositoryPostgres extends LikeRepository {
     if (!rowCount) {
       throw new NotFoundError('Resource tidak ditemukan')
     }
-
-    return rowCount
   }
 
   async getLikesByThreadId (threadId) {

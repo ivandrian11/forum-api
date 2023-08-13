@@ -39,8 +39,6 @@ class CommentRepositoryPostgres extends CommentRepository {
         'Kamu tidak memiliki hak akses untuk resource ini'
       )
     }
-
-    return rowCount
   }
 
   async verifyCommentIsExist (commentId, threadId) {
@@ -56,8 +54,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!rowCount) {
       throw new NotFoundError('Resource tidak ditemukan')
     }
-
-    return rowCount
   }
 
   async deleteCommentById (commentId) {
@@ -71,15 +67,12 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!rowCount) {
       throw new NotFoundError('Resource tidak ditemukan')
     }
-
-    return rowCount
   }
 
   async getCommentsByThreadId (threadId) {
     const query = {
       text: `SELECT c.id, c.date, u.username,
-            CASE WHEN c.is_deleted THEN '**komentar telah dihapus**'
-            ELSE c.content END AS content
+            c.is_deleted, c.content
             FROM comments c
             JOIN users u ON c.owner = u.id
             WHERE c.thread_id = $1

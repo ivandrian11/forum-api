@@ -17,12 +17,16 @@ class GetDetailThreadUseCase {
     const replies = await this._replyRepository.getRepliesByThreadId(threadId)
     const likes = await this._likeRepository.getLikesByThreadId(threadId)
 
-    comments = comments.map(comment => ({
-      ...comment,
-      likeCount: likes.filter(reply => reply.comment_id === comment.id).length,
+    comments = comments.map(({ is_deleted, content, ...props }) => ({
+      ...props,
+      content: is_deleted ? '**komentar telah dihapus**' : content,
+      likeCount: likes.filter(reply => reply.comment_id === props.id).length,
       replies: replies
-        .filter(reply => reply.comment_id === comment.id)
-        .map(({ comment_id, ...props }) => props)
+        .filter(reply => reply.comment_id === props.id)
+        .map(({ comment_id, content, is_deleted, ...props }) => ({
+          ...props,
+          content: is_deleted ? '**balasan telah dihapus**' : content
+        }))
     }))
 
     return {

@@ -87,7 +87,7 @@ describe('/likes endpoint', () => {
       expect(responseJson.message).toEqual('Resource tidak ditemukan')
     })
 
-    it('should response 201 and persisted like', async () => {
+    it('should response 200 and persisted like', async () => {
       // Arrange
       const server = await createServer(container)
       const { accessToken } = await ServerTestHelper.getCredentialData({

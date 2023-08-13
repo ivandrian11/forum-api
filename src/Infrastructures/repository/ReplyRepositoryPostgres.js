@@ -39,8 +39,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         'Kamu tidak memiliki hak akses untuk resource ini'
       )
     }
-
-    return rowCount
   }
 
   async verifyReplyIsExist (replyId, commentId, threadId) {
@@ -60,8 +58,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!rowCount) {
       throw new NotFoundError('Resource tidak ditemukan')
     }
-
-    return rowCount
   }
 
   async deleteReplyById (replyId) {
@@ -75,15 +71,12 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!rowCount) {
       throw new NotFoundError('Resource tidak ditemukan')
     }
-
-    return rowCount
   }
 
   async getRepliesByThreadId (threadId) {
     const query = {
       text: `SELECT r.id, r.date, u.username, r.comment_id,
-            CASE WHEN r.is_deleted THEN '**balasan telah dihapus**'
-            ELSE r.content END AS content
+            r.is_deleted, r.content
             FROM replies r
             JOIN comments c ON r.comment_id = c.id
             JOIN users u ON r.owner = u.id

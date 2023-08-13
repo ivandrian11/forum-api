@@ -39,11 +39,12 @@ describe('LikeRepositoryPostgres', () => {
     it('should persist new like and return added like correctly', async () => {
       // Action
       const id = await likeRepositoryPostgres.addLike(payload)
+      const likes = await LikesTableTestHelper.getLikeById(id)
 
       // Assert
-      await expect(LikesTableTestHelper.getLikeById(id)).resolves.toHaveLength(
-        1
-      )
+      expect(likes).toHaveLength(1)
+      expect(likes[0].comment_id).toBe(payload.commentId)
+      expect(likes[0].owner).toBe(payload.owner)
     })
 
     describe('verifyLikeIsExist function', () => {
@@ -72,7 +73,7 @@ describe('LikeRepositoryPostgres', () => {
     })
   })
 
-  describe('deleteLike  function', () => {
+  describe('deleteLike function', () => {
     it('should throw NotFoundError when like is not available', async () => {
       // Action & Assert
       await expect(
