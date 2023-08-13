@@ -35,11 +35,13 @@ describe('ThreadRepositoryPostgres', () => {
     it('should persist new thread', async () => {
       // Action
       const addedThread = await threadRepositoryPostgres.addThread(payload)
+      const threads = await ThreadsTableTestHelper.getThreadById(addedThread.id)
 
       // Assert
-      await expect(
-        ThreadsTableTestHelper.getThreadById(addedThread.id)
-      ).resolves.toHaveLength(1)
+      expect(threads).toHaveLength(1)
+      expect(threads[0].title).toBe(payload.title)
+      expect(threads[0].body).toBe(payload.body)
+      expect(threads[0].owner).toBe(payload.owner)
     })
 
     it('should return added thread correctly', async () => {
@@ -104,6 +106,10 @@ describe('ThreadRepositoryPostgres', () => {
 
       // Assert
       expect(thread.id).toBe('thread-123')
+      expect(thread).toHaveProperty('title')
+      expect(thread).toHaveProperty('body')
+      expect(thread).toHaveProperty('date')
+      expect(thread).toHaveProperty('username')
     })
   })
 })

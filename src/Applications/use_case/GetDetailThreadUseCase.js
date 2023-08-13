@@ -10,11 +10,15 @@ class GetDetailThreadUseCase {
     let comments = await this._commentRepository.getCommentsByThreadId(threadId)
     const replies = await this._replyRepository.getRepliesByThreadId(threadId)
 
-    comments = comments.map(comment => ({
-      ...comment,
+    comments = comments.map(({ is_deleted, content, ...props }) => ({
+      ...props,
+      content: is_deleted ? '**komentar telah dihapus**' : content,
       replies: replies
-        .filter(reply => reply.comment_id === comment.id)
-        .map(({ comment_id, ...props }) => props)
+        .filter(reply => reply.comment_id === props.id)
+        .map(({ comment_id, content, is_deleted, ...props }) => ({
+          ...props,
+          content: is_deleted ? '**balasan telah dihapus**' : content
+        }))
     }))
 
     return {

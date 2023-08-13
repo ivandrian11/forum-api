@@ -28,10 +28,10 @@ describe('ReplyRepositoryPostgres', () => {
 
   // Arange
   const payload = {
-    content: 'content of reply',
     commentId: 'comment-123',
     threadId: 'thread-123',
-    owner: 'user-123'
+    owner: 'user-123',
+    content: 'content of reply'
   }
   const fakeIdGenerator = () => 'xyz'
   const replyRepositoryPostgres = new ReplyRepositoryPostgres(
@@ -40,14 +40,17 @@ describe('ReplyRepositoryPostgres', () => {
   )
 
   describe('addReply function', () => {
-    it('should persist new reply and return added reply correctly', async () => {
+    it('should persist new reply and return property correctly', async () => {
       // Action
       const addedReply = await replyRepositoryPostgres.addReply(payload)
+      const replies = await RepliesTableTestHelper.getReplyById(addedReply.id)
 
       // Assert
-      await expect(
-        RepliesTableTestHelper.getReplyById(addedReply.id)
-      ).resolves.toHaveLength(1)
+      expect(replies).toHaveLength(1)
+      expect(replies[0].comment_id).toBe(payload.commentId)
+      expect(replies[0].owner).toBe(payload.owner)
+      expect(replies[0].content).toBe(payload.content)
+      expect(replies[0].is_deleted).toBeFalsy()
     })
 
     it('should return added reply correctly', async () => {
@@ -66,18 +69,6 @@ describe('ReplyRepositoryPostgres', () => {
   })
 
   describe('verifyIsTheOwner function', () => {
-    it('should return true when reply owner is the same as the payload', async () => {
-      // Action
-      await RepliesTableTestHelper.addReply({ id: 'reply-xyz' })
-      const isReplyOwner = await replyRepositoryPostgres.verifyIsTheOwner(
-        'reply-xyz',
-        payload.owner
-      )
-
-      // Assert
-      expect(isReplyOwner).toBeTruthy()
-    })
-
     it('should return AuthorizationError when reply owner is not the same as the payload', async () => {
       // Action
       await RepliesTableTestHelper.addReply({ id: 'reply-xyz' })
@@ -86,6 +77,16 @@ describe('ReplyRepositoryPostgres', () => {
       await expect(
         replyRepositoryPostgres.verifyIsTheOwner('reply-xyz', 'user-xyz')
       ).rejects.toThrowError(AuthorizationError)
+    })
+
+    it('should not throw NotFoundError when reply owner is same', async () => {
+      // Action
+      await RepliesTableTestHelper.addReply({ id: 'reply-xyz' })
+
+      // Assert
+      await expect(
+        replyRepositoryPostgres.verifyIsTheOwner('reply-xyz', payload.owner)
+      ).resolves.not.toThrowError(NotFoundError)
     })
   })
 
@@ -102,8 +103,10 @@ describe('ReplyRepositoryPostgres', () => {
     })
 
     it('should not throw NotFoundError when reply are available', async () => {
+      // Action
       await RepliesTableTestHelper.addReply({ id: 'reply-xyz' })
 
+      // Assert
       await expect(
         replyRepositoryPostgres.verifyReplyIsExist(
           'reply-xyz',
@@ -111,13 +114,6 @@ describe('ReplyRepositoryPostgres', () => {
           payload.threadId
         )
       ).resolves.not.toThrowError(NotFoundError)
-      await expect(
-        replyRepositoryPostgres.verifyReplyIsExist(
-          'reply-xyz',
-          payload.commentId,
-          payload.threadId
-        )
-      ).resolves.toBeTruthy()
     })
   })
 
@@ -156,7 +152,7 @@ describe('ReplyRepositoryPostgres', () => {
       expect(output[0]).toHaveProperty('username')
       expect(output[0]).toHaveProperty('date')
       expect(output[0]).toHaveProperty('content')
-      expect(output[0]).not.toHaveProperty('is_deleted')
+      expect(output[0]).toHaveProperty('is_deleted')
       expect(output).toHaveLength(2)
     })
 

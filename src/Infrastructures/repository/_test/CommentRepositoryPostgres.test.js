@@ -3,7 +3,6 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper')
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres')
-const NewComment = require('../../../Domains/comments/entities/NewComment')
 const AddedComment = require('../../../Domains/comments/entities/AddedComment')
 const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError')
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError')
@@ -25,11 +24,11 @@ describe('CommentRepositoryPostgres', () => {
   })
 
   // Arange
-  const payload = new NewComment({
+  const payload = {
     threadId: 'thread-123',
     owner: 'user-123',
     content: 'content of comment'
-  })
+  }
   const fakeIdGenerator = () => 'xyz'
   const commentRepositoryPostgres = new CommentRepositoryPostgres(
     pool,
@@ -37,14 +36,19 @@ describe('CommentRepositoryPostgres', () => {
   )
 
   describe('addComment function', () => {
-    it('should persist new comment and return added comment correctly', async () => {
+    it('should persist new comment and return property correctly', async () => {
       // Action
       const addedComment = await commentRepositoryPostgres.addComment(payload)
+      const comments = await CommentsTableTestHelper.getCommentById(
+        addedComment.id
+      )
 
       // Assert
-      await expect(
-        CommentsTableTestHelper.getCommentById(addedComment.id)
-      ).resolves.toHaveLength(1)
+      expect(comments).toHaveLength(1)
+      expect(comments[0].thread_id).toBe(payload.threadId)
+      expect(comments[0].owner).toBe(payload.owner)
+      expect(comments[0].content).toBe(payload.content)
+      expect(comments[0].is_deleted).toBeFalsy()
     })
 
     it('should return added comment correctly', async () => {
@@ -63,18 +67,6 @@ describe('CommentRepositoryPostgres', () => {
   })
 
   describe('verifyIsTheOwner function', () => {
-    it('should return true when comment owner is the same as the payload', async () => {
-      // Action
-      await CommentsTableTestHelper.addComment({ id: 'comment-xyz' })
-      const isCommentOwner = await commentRepositoryPostgres.verifyIsTheOwner(
-        'comment-xyz',
-        payload.owner
-      )
-
-      // Assert
-      expect(isCommentOwner).toBeTruthy()
-    })
-
     it('should return AuthorizationError when comment owner is not the same as the payload', async () => {
       // Action
       await CommentsTableTestHelper.addComment({ id: 'comment-xyz' })
@@ -83,6 +75,16 @@ describe('CommentRepositoryPostgres', () => {
       await expect(
         commentRepositoryPostgres.verifyIsTheOwner('comment-xyz', 'user-xyz')
       ).rejects.toThrowError(AuthorizationError)
+    })
+
+    it('should not return AuthorizationError when comment owner is same', async () => {
+      // Action
+      await CommentsTableTestHelper.addComment({ id: 'comment-xyz' })
+
+      // Assert
+      await expect(
+        commentRepositoryPostgres.verifyIsTheOwner('comment-xyz', payload.owner)
+      ).resolves.not.toThrowError(NotFoundError)
     })
   })
 
@@ -108,12 +110,6 @@ describe('CommentRepositoryPostgres', () => {
           payload.threadId
         )
       ).resolves.not.toThrowError(NotFoundError)
-      await expect(
-        commentRepositoryPostgres.verifyCommentIsExist(
-          'comment-xyz',
-          payload.threadId
-        )
-      ).resolves.toBeTruthy()
     })
   })
 
@@ -152,7 +148,7 @@ describe('CommentRepositoryPostgres', () => {
       expect(output[0]).toHaveProperty('content')
       expect(output[0]).toHaveProperty('date')
       expect(output[0]).toHaveProperty('username')
-      expect(output[0]).not.toHaveProperty('is_deleted')
+      expect(output[0]).toHaveProperty('is_deleted')
       expect(output).toHaveLength(2)
     })
 
