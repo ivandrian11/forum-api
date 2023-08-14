@@ -10,6 +10,7 @@ const threads = require('../../Interfaces/http/api/threads')
 const comments = require('../../Interfaces/http/api/comments')
 const replies = require('../../Interfaces/http/api/replies')
 const likes = require('../../Interfaces/http/api/likes')
+const { jwtStrategyName } = require('../../Commons/config')
 
 const createServer = async container => {
   const server = Hapi.server({
@@ -28,7 +29,7 @@ const createServer = async container => {
     }
   ])
 
-  server.auth.strategy('forumapi_jwt', 'jwt', {
+  server.auth.strategy(jwtStrategyName, 'jwt', {
     keys: process.env.ACCESS_TOKEN_KEY,
     verify: {
       aud: false,

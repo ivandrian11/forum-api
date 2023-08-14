@@ -1,10 +1,12 @@
+const { jwtStrategyName } = require('../../../../Commons/config')
+
 const routes = handler => [
   {
     method: 'POST',
     path: '/threads/{threadId}/comments/{commentId}/replies',
     handler: handler.postReplyHandler,
     options: {
-      auth: 'forumapi_jwt'
+      auth: jwtStrategyName
     }
   },
   {
@@ -12,7 +14,7 @@ const routes = handler => [
     path: '/threads/{threadId}/comments/{commentId}/replies/{replyId}',
     handler: handler.deleteReplyByIdHandler,
     options: {
-      auth: 'forumapi_jwt'
+      auth: jwtStrategyName
     }
   }
 ]

@@ -42,21 +42,62 @@ const LikeCommentUseCase = require('../Applications/use_case/LikeCommentUseCase'
 // creating container
 const container = createContainer()
 
+// reuse parameter
+const generalRepositoryParameter = {
+  dependencies: [
+    {
+      concrete: pool
+    },
+    {
+      concrete: nanoid
+    }
+  ]
+}
+
+const useCaseParameter = {
+  injectType: 'destructuring',
+  dependencies: [
+    {
+      name: 'userRepository',
+      internal: UserRepository.name
+    },
+    {
+      name: 'authenticationRepository',
+      internal: AuthenticationRepository.name
+    },
+    {
+      name: 'authenticationTokenManager',
+      internal: AuthenticationTokenManager.name
+    },
+    {
+      name: 'passwordHash',
+      internal: PasswordHash.name
+    },
+    {
+      name: 'threadRepository',
+      internal: ThreadRepository.name
+    },
+    {
+      name: 'commentRepository',
+      internal: CommentRepository.name
+    },
+    {
+      name: 'replyRepository',
+      internal: ReplyRepository.name
+    },
+    {
+      name: 'likeRepository',
+      internal: LikeRepository.name
+    }
+  ]
+}
+
 // registering services and repository
 container.register([
   {
     key: UserRepository.name,
     Class: UserRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool
-        },
-        {
-          concrete: nanoid
-        }
-      ]
-    }
+    parameter: generalRepositoryParameter
   },
   {
     key: AuthenticationRepository.name,
@@ -94,58 +135,22 @@ container.register([
   {
     key: ThreadRepository.name,
     Class: ThreadRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool
-        },
-        {
-          concrete: nanoid
-        }
-      ]
-    }
+    parameter: generalRepositoryParameter
   },
   {
     key: CommentRepository.name,
     Class: CommentRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool
-        },
-        {
-          concrete: nanoid
-        }
-      ]
-    }
+    parameter: generalRepositoryParameter
   },
   {
     key: ReplyRepository.name,
     Class: ReplyRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool
-        },
-        {
-          concrete: nanoid
-        }
-      ]
-    }
+    parameter: generalRepositoryParameter
   },
   {
     key: LikeRepository.name,
     Class: LikeRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool
-        },
-        {
-          concrete: nanoid
-        }
-      ]
-    }
+    parameter: generalRepositoryParameter
   }
 ])
 
@@ -154,189 +159,57 @@ container.register([
   {
     key: AddUserUseCase.name,
     Class: AddUserUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'userRepository',
-          internal: UserRepository.name
-        },
-        {
-          name: 'passwordHash',
-          internal: PasswordHash.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: LoginUserUseCase.name,
     Class: LoginUserUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'userRepository',
-          internal: UserRepository.name
-        },
-        {
-          name: 'authenticationRepository',
-          internal: AuthenticationRepository.name
-        },
-        {
-          name: 'authenticationTokenManager',
-          internal: AuthenticationTokenManager.name
-        },
-        {
-          name: 'passwordHash',
-          internal: PasswordHash.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: LogoutUserUseCase.name,
     Class: LogoutUserUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'authenticationRepository',
-          internal: AuthenticationRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: RefreshAuthenticationUseCase.name,
     Class: RefreshAuthenticationUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'authenticationRepository',
-          internal: AuthenticationRepository.name
-        },
-        {
-          name: 'authenticationTokenManager',
-          internal: AuthenticationTokenManager.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: AddThreadUseCase.name,
     Class: AddThreadUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: AddCommentUseCase.name,
     Class: AddCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name
-        },
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: DeleteCommentUseCase.name,
     Class: DeleteCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: GetDetailThreadUseCase.name,
     Class: GetDetailThreadUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name
-        },
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name
-        },
-        {
-          name: 'replyRepository',
-          internal: ReplyRepository.name
-        },
-        {
-          name: 'likeRepository',
-          internal: LikeRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: AddReplyUseCase.name,
     Class: AddReplyUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'replyRepository',
-          internal: ReplyRepository.name
-        },
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: DeleteReplyUseCase.name,
     Class: DeleteReplyUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'replyRepository',
-          internal: ReplyRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   },
   {
     key: LikeCommentUseCase.name,
     Class: LikeCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'likeRepository',
-          internal: LikeRepository.name
-        },
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name
-        }
-      ]
-    }
+    parameter: useCaseParameter
   }
 ])
 

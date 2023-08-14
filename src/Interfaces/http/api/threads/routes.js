@@ -1,10 +1,12 @@
+const { jwtStrategyName } = require('../../../../Commons/config')
+
 const routes = handler => [
   {
     method: 'POST',
     path: '/threads',
     handler: handler.postThreadHandler,
     options: {
-      auth: 'forumapi_jwt'
+      auth: jwtStrategyName
     }
   },
   {
